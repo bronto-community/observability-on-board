@@ -6,7 +6,7 @@ description: 'Since Keycloak 26, OpenTelemetry ships inside the server. A few li
 takeaway: 'One login is 28 spans, and the database is 0.7% of it. The trace shows where the other 99% goes.'
 signals: ['traces', 'metrics', 'logs']
 docs: 'https://www.keycloak.org/observability/tracing'
-video: 'https://www.youtube-nocookie.com/embed/TBpPEzlUgKA'
+video: 'https://www.youtube-nocookie.com/embed/7f6PlBkxQCY'
 verified: '2026-08-13'
 ---
 
