@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/vercel": "^9.0.5",
-    "astro": "^5.0.0",
+    "@astrojs/vercel": "^11.0.8",
+    "astro": "^7.2.9",
     "astro-icon": "^1.2.0"
   },
   "devDependencies": {
