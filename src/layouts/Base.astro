@@ -1,0 +1,332 @@
+---
+import '../styles/global.css';
+import { Icon } from 'astro-icon/components';
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  ogType?: string;
+}
+const { title, description, image = '/og-default.png', ogType = 'website' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en" data-ship="bronto">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      try {
+        if (localStorage.getItem('shipEndpoint')) document.documentElement.dataset.endpointSaved = '1';
+        if (localStorage.getItem('knobs') === 'full') document.documentElement.dataset.knobs = 'full';
+        if (localStorage.getItem('shipRegion') === 'us') document.documentElement.dataset.region = 'us';
+        var s = localStorage.getItem('ship');
+        if (s === 'file') s = 'custom';
+        var h = (location.hash || '').slice(1);
+        if (h === 'bronto' || h === 'collector' || h === 'custom') s = h;
+        if (s === 'collector' || s === 'custom') document.documentElement.dataset.ship = s;
+      } catch (e) {}
+    </script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Observability on Board" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@brontohq" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/radio-canada-big.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin />
+    {
+      import.meta.env.PROD && (
+        <>
+          <script is:inline defer src="/_vercel/insights/script.js" />
+          <script is:inline defer src="/_vercel/speed-insights/script.js" />
+        </>
+      )
+    }
+    <noscript>
+      <style>
+        .ship { display: block !important; }
+        .shipbar, .knob-tabs { display: none !important; }
+        .knob-full { display: block !important; }
+      </style>
+    </noscript>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="wordmark" href="/">Observability <span class="flag">on Board</span></a>
+        <nav>
+          <a href="/setup/"><Icon name="lucide:sliders-horizontal" /> Setup</a>
+          <a href="https://www.youtube.com/@brontohq"><Icon name="lucide:youtube" /> YouTube</a>
+          <a href="https://github.com/bronto-community/observability-on-board"
+            ><Icon name="lucide:github" /> GitHub</a
+          >
+        </nav>
+      </div>
+    </header>
+
+    <slot />
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span class="love">Built with ❤️ at <a href="https://bronto.io">Bronto</a></span>
+        <span
+          >Code <a href="https://github.com/bronto-community/observability-on-board/blob/main/LICENSE">Apache-2.0</a>
+          · Content <a href="https://github.com/bronto-community/observability-on-board/blob/main/LICENSE-CONTENT">CC BY 4.0</a></span
+        >
+      </div>
+    </footer>
+
+    <p class="sr-only" aria-live="polite" id="live-region"></p>
+
+    <script>
+      const live = document.getElementById('live-region');
+      const announce = (msg: string) => {
+        if (live) live.textContent = msg;
+      };
+
+      // Ship-to switcher: one choice, remembered, applied everywhere.
+      const targetName: Record<string, string> = {
+        bronto: 'Bronto',
+        collector: 'the local Collector',
+        custom: 'your own endpoint',
+      };
+      const applyShip = (target: string, persist: boolean) => {
+        document.documentElement.dataset.ship = target;
+        if (persist) {
+          try {
+            localStorage.setItem('ship', target);
+          } catch {}
+        }
+        for (const b of document.querySelectorAll('.shipbar button[data-target]')) {
+          b.setAttribute('aria-pressed', String((b as HTMLElement).dataset.target === target));
+        }
+      };
+      for (const btn of document.querySelectorAll<HTMLButtonElement>('.shipbar button[data-target]')) {
+        btn.addEventListener('click', (e) => {
+          applyShip(btn.dataset.target!, true);
+          announce(`Showing instructions for ${targetName[btn.dataset.target!] ?? btn.dataset.target}`);
+          if (e.detail > 0) btn.blur(); // mouse click: release the hover card; keyboard focus stays
+        });
+      }
+      applyShip(document.documentElement.dataset.ship ?? 'bronto', false);
+
+      // Same-page hash navigation (e.g. the pop-card links on /setup/).
+      window.addEventListener('hashchange', () => {
+        const h = location.hash.slice(1);
+        if (h === 'bronto' || h === 'collector' || h === 'custom') {
+          applyShip(h, false);
+          document.getElementById(h)?.scrollIntoView();
+        }
+      });
+
+      // Config-block tabs: Essentials, or the full set of options revealed below.
+      const syncKnobTabs = () => {
+        const mode = document.documentElement.dataset.knobs === 'full' ? 'full' : 'basic';
+        for (const b of document.querySelectorAll('.knob-tabs button')) {
+          b.setAttribute('aria-pressed', String((b as HTMLElement).dataset.knob === mode));
+        }
+      };
+      for (const btn of document.querySelectorAll<HTMLButtonElement>('.knob-tabs button')) {
+        btn.addEventListener('click', () => {
+          if (btn.dataset.knob === 'full') document.documentElement.dataset.knobs = 'full';
+          else delete document.documentElement.dataset.knobs;
+          try {
+            localStorage.setItem('knobs', btn.dataset.knob!);
+          } catch {}
+          syncKnobTabs();
+          announce(btn.dataset.knob === 'full' ? 'Showing every option' : 'Showing the essential options');
+        });
+      }
+      syncKnobTabs();
+
+      // Share chip: copy the ote.li short link; fall back to navigating.
+      for (const el of document.querySelectorAll<HTMLElement>('.share-link')) {
+        const label = el.querySelector('span');
+        const original = label?.textContent ?? '';
+        let timer: ReturnType<typeof setTimeout>;
+        el.addEventListener('click', async (e) => {
+          e.preventDefault();
+          try {
+            await navigator.clipboard.writeText(el.dataset.share ?? '');
+            if (label) {
+              label.style.minWidth = `${label.offsetWidth}px`;
+              label.textContent = 'copied';
+              clearTimeout(timer);
+              timer = setTimeout(() => (label.textContent = original), 1500);
+            }
+            announce('Share link copied');
+          } catch {
+            location.href = el.dataset.share ?? '#';
+          }
+        });
+      }
+
+      // Custom endpoint: swap placeholders in .ship-custom blocks for the saved values.
+      const stored = {
+        YOUR_OTLP_ENDPOINT: localStorage.getItem('shipEndpoint') ?? '',
+        YOUR_AUTH_HEADER: localStorage.getItem('shipHeaderName') ?? '',
+        YOUR_AUTH_VALUE: localStorage.getItem('shipHeaderValue') ?? '',
+      };
+      // A half-filled pair still counts as auth; only a fully absent one drops the line.
+      const hasAuth = Boolean(stored.YOUR_AUTH_HEADER || stored.YOUR_AUTH_VALUE);
+      const substitute = (root: Element, values: Record<string, string>) => {
+        for (const el of root.querySelectorAll('pre')) {
+          const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+          let node;
+          while ((node = walker.nextNode())) {
+            let text = node.nodeValue ?? '';
+            for (const [key, val] of Object.entries(values)) {
+              if (val) text = text.replaceAll(key, () => val);
+            }
+            node.nodeValue = text;
+          }
+        }
+      };
+      for (const div of document.querySelectorAll<HTMLElement>('.ship-custom')) {
+        if (stored.YOUR_OTLP_ENDPOINT && !hasAuth) {
+          if (div.dataset.emptyAuth === 'dummy') {
+            // This tool needs a headers line even without auth: use a local dummy pair.
+            substitute(div, { ...stored, YOUR_AUTH_HEADER: 'x-otel-auth', YOUR_AUTH_VALUE: 'none' });
+            continue;
+          }
+          for (const line of div.querySelectorAll('pre .line')) {
+            if (!line.textContent?.includes('YOUR_AUTH_HEADER')) continue;
+            if (line.nextSibling?.nodeType === Node.TEXT_NODE) line.nextSibling.remove();
+            line.remove();
+          }
+        }
+        substitute(div, stored);
+      }
+      document.documentElement.dataset.subReady = '1';
+
+      // Bronto region toggle: swap the ingest host in every Bronto code block.
+      const hostFor = { eu: 'ingestion.eu.bronto.io', us: 'ingestion.us.bronto.io' };
+      const applyRegion = (region: 'eu' | 'us') => {
+        document.documentElement.dataset.region = region;
+        const from = hostFor[region === 'eu' ? 'us' : 'eu'];
+        const to = hostFor[region];
+        for (const el of document.querySelectorAll('.ship-bronto pre')) {
+          const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+          let node;
+          while ((node = walker.nextNode())) {
+            node.nodeValue = (node.nodeValue ?? '').replaceAll(from, to);
+          }
+        }
+        for (const b of document.querySelectorAll('.shipbar .regions button')) {
+          b.setAttribute('aria-pressed', String((b as HTMLElement).dataset.region === region));
+        }
+      };
+      if (document.documentElement.dataset.region === 'us') applyRegion('us');
+      document.documentElement.dataset.regionReady = '1';
+      for (const btn of document.querySelectorAll<HTMLButtonElement>('.shipbar .regions button')) {
+        btn.addEventListener('click', () => {
+          const region = btn.dataset.region as 'eu' | 'us';
+          applyRegion(region);
+          try {
+            localStorage.setItem('shipRegion', region);
+          } catch {}
+          announce(`Bronto endpoints now use the ${region.toUpperCase()} region`);
+        });
+      }
+
+      // No endpoint saved yet: tell the reader wherever the placeholders appear.
+      if (!stored.YOUR_OTLP_ENDPOINT) {
+        for (const el of document.querySelectorAll('.ship-custom')) {
+          if (el.querySelector('pre') && !el.querySelector('#otlp-form')) {
+            const note = document.createElement('p');
+            note.className = 'ship-callout';
+            note.innerHTML =
+              'The blocks below show placeholders because you have not saved an endpoint yet. ' +
+              '<a href="/setup/#custom">Set your endpoint</a> once and they fill in automatically.';
+            el.prepend(note);
+          }
+        }
+      }
+
+      // The setup page's endpoint form: prefill, save to this browser, re-render.
+      const form = document.getElementById('otlp-form') as HTMLFormElement | null;
+      if (form) {
+        const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+        field('endpoint').value = stored.YOUR_OTLP_ENDPOINT;
+        field('header').value = stored.YOUR_AUTH_HEADER;
+        field('value').value = stored.YOUR_AUTH_VALUE;
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const header = field('header').value.trim();
+          const value = field('value').value.trim();
+          if (Boolean(header) !== Boolean(value)) {
+            const empty = header ? field('value') : field('header');
+            empty.setCustomValidity('Fill in both auth fields, or leave both empty.');
+            empty.reportValidity();
+            empty.addEventListener('input', () => empty.setCustomValidity(''), { once: true });
+            return;
+          }
+          try {
+            localStorage.setItem('shipEndpoint', field('endpoint').value.trim().replace(/\/+$/, ''));
+            localStorage.setItem('shipHeaderName', header);
+            localStorage.setItem('shipHeaderValue', value);
+          } catch {}
+          location.reload();
+        });
+        const clear = document.getElementById('otlp-clear');
+        clear?.addEventListener('click', () => {
+          try {
+            localStorage.removeItem('shipEndpoint');
+            localStorage.removeItem('shipHeaderName');
+            localStorage.removeItem('shipHeaderValue');
+          } catch {}
+          location.reload();
+        });
+      }
+
+      // Copy button on every code block.
+      for (const pre of document.querySelectorAll('.prose pre')) {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = 'copy';
+        btn.setAttribute('aria-label', 'Copy this code block');
+        btn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? '');
+            btn.textContent = 'copied';
+            setTimeout(() => (btn.textContent = 'copy'), 1500);
+            announce('Code copied');
+          } catch {
+            const range = document.createRange();
+            range.selectNodeContents(pre.querySelector('code') ?? pre);
+            const sel = window.getSelection();
+            sel?.removeAllRanges();
+            sel?.addRange(range);
+            btn.textContent = 'press ⌘C';
+            setTimeout(() => (btn.textContent = 'copy'), 2500);
+          }
+        });
+        pre.appendChild(btn);
+      }
+
+      // Markdown tables: scroll in a wrapper so the table keeps its semantics.
+      for (const table of document.querySelectorAll('.prose table')) {
+        const scroller = document.createElement('div');
+        scroller.className = 'table-scroll';
+        scroller.tabIndex = 0;
+        table.parentNode?.insertBefore(scroller, table);
+        scroller.appendChild(table);
+      }
+    </script>
+  </body>
+</html>

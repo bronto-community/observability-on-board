@@ -1,0 +1,28 @@
+name: Episode request
+description: Suggest a tool for the next episode
+title: 'Episode request'
+labels: [episode-request]
+body:
+  - type: input
+    id: tool
+    attributes:
+      label: Tool
+      description: The tool that already ships OpenTelemetry support
+      placeholder: e.g. Envoy
+    validations:
+      required: true
+  - type: input
+    id: docs
+    attributes:
+      label: Where the tool documents its OpenTelemetry support
+      description: A link into the tool's own docs, not opentelemetry.io
+      placeholder: https://example.com/docs/opentelemetry
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else
+      description: What would you want the episode to show?
+    validations:
+      required: false

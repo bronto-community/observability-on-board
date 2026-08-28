@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://observability-on-board.vercel.app/sitemap-index.xml

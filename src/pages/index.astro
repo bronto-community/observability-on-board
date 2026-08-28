@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import ShipBar from '../components/ShipBar.astro';
+
+const episodes = (await getCollection('episodes')).sort(
+  (a, b) => a.data.episode - b.data.episode
+);
+
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<Base
+  title="Observability on Board — switch on the OpenTelemetry your tools already ship"
+  description="The Observability on Board video series, in copy-pasteable form: switch on the OpenTelemetry support your tools already ship."
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">The video series, in copy-pasteable form</p>
+      <h1>Your tools already speak <em>OpenTelemetry</em>.</h1>
+      <p class="lede">
+        Claude Code, Docker, Keycloak and others already come with observability on board.
+        Each of the episodes below shows you how to switch on the telemetry the tool ships
+        already.
+      </p>
+      <div class="hero-ship">
+        <ShipBar />
+        <p class="ship-note">
+          Pick one and every episode adapts: Bronto, a local Collector, or any OTLP endpoint
+          you already use.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="episodes" id="main">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Episodes</h2>
+        <a class="yt-link" href="https://www.youtube.com/playlist?list=PLIqgas8UqQ9E"
+          ><Icon name="lucide:youtube" /> Watch the series on YouTube</a
+        >
+      </div>
+      <ul class="card-grid">
+        {
+          episodes.map((e) => (
+            <li>
+              <a class="card" href={`/episodes/${e.id}/`}>
+                <span class="num">EP {pad(e.data.episode)}</span>
+                <h3>{e.data.tool}</h3>
+                <p>{e.data.takeaway}</p>
+                <span class="sig-list" aria-label="Signals this episode exports">
+                  {e.data.signals.map((s) => <span class="sig">{s}</span>)}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a
+            class="card request"
+            href="https://github.com/bronto-community/observability-on-board/issues/new?template=episode-request.yml"
+          >
+            <span class="num"><Icon name="lucide:plus" /> NEXT EPISODE</span>
+            <h3>Your tool?</h3>
+            <p>
+              Know a tool with observability on board that we haven't covered? Tell us which
+              one and where its OpenTelemetry docs live.
+            </p>
+            <span class="request-cta">Request an episode</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</Base>

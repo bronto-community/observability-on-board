@@ -1,0 +1,26 @@
+---
+import Base from './Base.astro';
+import ShipBar from '../components/ShipBar.astro';
+const { frontmatter } = Astro.props;
+---
+
+<Base title={`${frontmatter.title} — Observability on Board`} description={frontmatter.description}>
+  <header class="episode-header">
+    <div class="wrap" style="display: block;">
+      <h1>{frontmatter.title}</h1>
+      <p class="lede">{frontmatter.description}</p>
+    </div>
+  </header>
+
+  <div class="episode-shipbar">
+    <div class="wrap">
+      <ShipBar />
+    </div>
+  </div>
+
+  <article class="prose" id="main">
+    <div class="wrap measure">
+      <slot />
+    </div>
+  </article>
+</Base>

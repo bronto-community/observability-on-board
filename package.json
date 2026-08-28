@@ -1,0 +1,20 @@
+{
+  "name": "observability-on-board",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/vercel": "^9.0.5",
+    "astro": "^5.0.0",
+    "astro-icon": "^1.2.0"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.126"
+  }
+}

@@ -1,0 +1,55 @@
+---
+// The one control every episode shares: where your telemetry goes.
+import { Icon } from 'astro-icon/components';
+
+const options = [
+  {
+    id: 'custom',
+    icon: 'lucide:plug',
+    label: 'Your endpoint',
+    blurb: 'Use an OTLP endpoint you already have, from another vendor or your platform team. This one needs a one-time setup step: save your endpoint and the episodes fill it in.',
+    cta: 'Set your endpoint',
+  },
+  {
+    id: 'collector',
+    icon: 'lucide:radio-tower',
+    label: 'Local Collector',
+    blurb: 'Run an OpenTelemetry Collector on your machine and watch telemetry arrive in its terminal. No account needed.',
+  },
+  {
+    id: 'bronto',
+    icon: 'lucide:cloud-upload',
+    label: 'Bronto',
+    blurb: 'Ship straight to Bronto. You need an account and an API key with ingest permission.',
+  },
+];
+---
+
+<div class="shipbar" role="group" aria-label="Choose where to ship telemetry">
+  <span class="label">Ship telemetry to</span>
+  <span class="options">
+    {
+      options.map((o) => (
+        <>
+          <span class="opt">
+            <button data-target={o.id} aria-pressed={o.id === 'bronto' ? 'true' : 'false'}>
+              <Icon name={o.icon} /> {o.label}
+            </button>
+            <span class="pop">
+              <span class="pop-card">
+                {o.blurb}
+                <a href={`/setup/#${o.id}`}>{o.cta ?? 'More details'}</a>
+              </span>
+            </span>
+          </span>
+          {o.id === 'bronto' && (
+            <span class="regions" role="group" aria-label="Bronto region">
+              <button data-region="eu" aria-pressed="true">EU</button>
+              <button data-region="us" aria-pressed="false">US</button>
+            </span>
+          )}
+        </>
+      ))
+    }
+  </span>
+</div>

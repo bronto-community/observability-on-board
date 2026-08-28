@@ -1,0 +1,156 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import ShipBar from '../../components/ShipBar.astro';
+
+export async function getStaticPaths() {
+  const episodes = (await getCollection('episodes')).sort((a, b) => a.data.episode - b.data.episode);
+  return episodes.map((e, i) => ({
+    params: { slug: e.id },
+    props: { entry: e, prev: episodes[i - 1] ?? null, next: episodes[i + 1] ?? null },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+const pad = (n: number) => String(n).padStart(2, '0');
+const blogHost = entry.data.blog ? new URL(entry.data.blog).hostname.replace(/^www\./, '') : null;
+const share = entry.data.share ?? `https://ote.li/with/${entry.id}`;
+const videoId = entry.data.video ? entry.data.video.split('/').pop() : null;
+// Shorts thumbnails vary: oardefault is the true vertical frame but only exists for
+// some videos; maxresdefault beats hqdefault everywhere. Probed at build time.
+async function bestThumb(id: string) {
+  for (const variant of ['oardefault', 'maxresdefault']) {
+    try {
+      const r = await fetch(`https://i.ytimg.com/vi/${id}/${variant}.jpg`, { method: 'HEAD' });
+      if (r.ok) return `https://i.ytimg.com/vi/${id}/${variant}.jpg`;
+    } catch {}
+  }
+  return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+}
+const thumb = videoId ? await bestThumb(videoId) : null;
+const videoLd = entry.data.video
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: entry.data.title,
+      description: entry.data.description,
+      thumbnailUrl: thumb,
+      uploadDate: entry.data.verified,
+      embedUrl: entry.data.video,
+    })
+  : null;
+---
+
+<Base
+  title={`${entry.data.title} · ${entry.data.tool} OpenTelemetry`}
+  description={entry.data.description}
+  ogType="article"
+>
+  <Fragment slot="head">
+    {videoLd && <script type="application/ld+json" set:html={videoLd} />}
+  </Fragment>
+  <div class="episode-layout wrap">
+    <header class="episode-intro">
+      <p class="eyebrow-row">
+        <span class="eyebrow">Episode {pad(entry.data.episode)}</span>
+        <span class="sig-list" role="list" aria-label="Signals this episode exports">
+          {entry.data.signals.map((s) => <span class="sig" role="listitem">{s}</span>)}
+        </span>
+      </p>
+      <h1>{entry.data.title}</h1>
+      <p class="lede">{entry.data.description}</p>
+      <ul class="episode-links">
+        <li>
+          <a href={entry.data.docs}><Icon name="lucide:book-open" /> {entry.data.tool} docs</a>
+        </li>
+        {
+          entry.data.blog && (
+            <li>
+              <a href={entry.data.blog}>
+                <Icon name="lucide:newspaper" /> Blog post · {blogHost}
+              </a>
+            </li>
+          )
+        }
+      </ul>
+    </header>
+
+    <aside class="episode-rail">
+      <div class="video-slot">
+        {
+          entry.data.video ? (
+            <button
+              class="facade"
+              data-embed={`${entry.data.video}?autoplay=1`}
+              aria-label={`Play the ${entry.data.tool} episode video`}
+            >
+              <img src={thumb} alt={`${entry.data.tool} episode video`} loading="lazy" />
+              <span class="play" aria-hidden="true">
+                <span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </span>
+            </button>
+          ) : (
+            <div class="placeholder">
+              <span>episode video<br />coming soon</span>
+            </div>
+          )
+        }
+      </div>
+      <div class="episode-actions">
+        <a class="share-link" href={share} data-share={share} title={share}>
+          <Icon name="lucide:share-2" /> <span>Copy link</span>
+        </a>
+        <a class="share-link" href={`/get/${entry.id}`} data-share={`curl -L ote.li/get/${entry.id}`} title={`curl -L ote.li/get/${entry.id}`}>
+          <Icon name="lucide:terminal" /> <span>Copy curl</span>
+        </a>
+      </div>
+    </aside>
+
+    <div class="episode-body">
+      <div class="episode-shipbar">
+        <ShipBar />
+      </div>
+
+      <article class="prose" id="main">
+        <div class="measure">
+          <Content />
+        </div>
+      </article>
+
+      {
+        (prev || next) && (
+          <nav class="episode-nav" aria-label="Other episodes">
+            {prev && (
+              <a href={`/episodes/${prev.id}/`}>
+                ← EP {pad(prev.data.episode)} {prev.data.tool}
+              </a>
+            )}
+            {next && (
+              <a class="next" href={`/episodes/${next.id}/`}>
+                EP {pad(next.data.episode)} {next.data.tool} →
+              </a>
+            )}
+          </nav>
+        )
+      }
+    </div>
+  </div>
+</Base>
+
+<script>
+  // Video facade: swap in the real player only when someone asks for it.
+  for (const facade of document.querySelectorAll<HTMLButtonElement>('.video-slot .facade')) {
+    facade.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = facade.dataset.embed ?? '';
+      iframe.title = facade.getAttribute('aria-label') ?? 'Episode video';
+      iframe.allow = 'autoplay; encrypted-media';
+      iframe.allowFullscreen = true;
+      facade.replaceWith(iframe);
+    });
+  }
+</script>

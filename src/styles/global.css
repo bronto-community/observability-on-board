@@ -1,0 +1,423 @@
+/* Palette lifted from bronto.io: warm paper, dark warm ink, brand gold.
+   --gold is for fills and highlights; --gold-deep is darkened for AA text contrast. */
+:root {
+  --paper: hsl(48 26% 96%);
+  --paper-raised: #fcfcfc;
+  --ink: hsl(60 2% 26%);
+  --ink-soft: hsl(60 2% 42%);
+  --gold: #f5b719;
+  --gold-deep: #8a5a00;
+  --night: #252f3e;
+  --night-ink: hsl(48 26% 92%);
+  --line: hsl(60 4% 26% / 0.14);
+  --sans: 'Radio Canada Big', system-ui, sans-serif;
+  --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --measure: 44rem;
+}
+
+@font-face {
+  font-family: 'Radio Canada Big';
+  src: url('/fonts/radio-canada-big.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/geist-mono.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration-color: var(--gold-deep); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a:hover { color: var(--gold-deep); }
+:focus-visible { outline: 2px solid var(--night); outline-offset: 2px; }
+
+.wrap { max-width: 68rem; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: 1rem; top: -3rem; z-index: 100;
+  background: var(--night); color: var(--night-ink);
+  padding: 0.6rem 1rem; border-radius: 0 0 8px 8px;
+  font: 500 0.85rem/1 var(--mono); text-decoration: none;
+  transition: top 120ms ease;
+}
+.skip-link:focus-visible { top: 0; color: var(--night-ink); }
+
+/* Deep links must clear the sticky ship bar */
+.ship, .prose h2, .prose h3 { scroll-margin-top: 4.5rem; }
+
+/* ---------- header / footer ---------- */
+
+.site-header { border-bottom: 1px solid var(--line); }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.1rem; }
+.wordmark { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; text-decoration: none; }
+.wordmark:hover { color: inherit; }
+.wordmark .flag { color: var(--gold-deep); }
+.site-header nav { font-family: var(--mono); font-size: 0.8rem; display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; }
+.site-header nav a { text-decoration: none; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 0.4rem; }
+.site-header nav a svg { width: 1.05em; height: 1.05em; }
+.site-header nav a:hover { color: var(--ink); }
+
+.site-footer { background: var(--night); color: var(--night-ink); margin-top: 6rem; }
+.site-footer .wrap { padding-block: 2.5rem; display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; justify-content: space-between; font-size: 0.9rem; }
+.site-footer a { color: inherit; text-decoration-color: var(--gold); }
+.site-footer a:hover { color: var(--gold); }
+.site-footer .love { color: hsl(48 26% 96% / 0.65); }
+
+/* ---------- hero ---------- */
+
+.hero { padding-block: clamp(2rem, 4.5vw, 3.25rem) 0; }
+.hero .eyebrow { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  max-width: 30ch;
+  margin-top: 0.6rem;
+}
+.hero h1 em { font-style: normal; box-shadow: inset 0 -0.28em 0 var(--gold); }
+.hero .lede { max-width: 62ch; margin-top: 1rem; font-size: 1.05rem; color: var(--ink-soft); }
+.hero-ship { margin-top: 1.6rem; }
+.hero-ship .ship-note { margin-top: 0.5rem; }
+
+/* ---------- ship-to switcher ---------- */
+
+.shipbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; }
+.shipbar .label { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+.shipbar .options { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 22px; background: var(--paper-raised); padding: 3px; }
+.shipbar button {
+  font: 500 0.85rem/1 var(--sans);
+  padding: 0.5rem 0.95rem;
+  border: 0; border-radius: 999px;
+  background: transparent; color: var(--ink-soft);
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.shipbar button svg { width: 1em; height: 1em; }
+.shipbar button:hover { color: var(--ink); }
+.shipbar button[aria-pressed='true'] { background: var(--gold); color: var(--night); font-weight: 700; }
+
+/* "Your endpoint" needs one-time setup: show a dot until an endpoint is saved */
+.shipbar button[data-target='custom'] { position: relative; }
+html:not([data-endpoint-saved]) .shipbar button[data-target='custom']::after {
+  content: '';
+  position: absolute; top: 3px; right: 7px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--gold-deep);
+}
+html:not([data-endpoint-saved]) .shipbar button[data-target='custom'][aria-pressed='true']::after { background: var(--night); }
+
+.ship-note { font-size: 0.85rem; color: var(--ink-soft); }
+
+/* Bronto region toggle, attached to the Bronto option while it is the target */
+.shipbar .regions { display: none; }
+[data-ship='bronto'] .shipbar .regions { display: inline-flex; align-items: center; margin-left: -0.4rem; margin-right: 0.35rem; }
+.shipbar .regions button {
+  font: 500 0.7rem/1 var(--mono);
+  padding: 0.5rem 0.6rem;
+  border: 0; border-radius: 999px;
+  background: transparent; color: var(--ink-soft);
+  cursor: pointer;
+}
+.shipbar .regions button:hover { color: var(--ink); }
+.shipbar .regions button[aria-pressed='true'] { background: var(--night); color: var(--night-ink); font-weight: 700; }
+
+/* Hover card explaining each target; stays open while focus is inside it */
+.shipbar .opt { position: relative; display: inline-flex; }
+.shipbar .pop {
+  display: none;
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  padding-top: 0.55rem;
+  width: min(17rem, calc(100vw - 2rem)); z-index: 30;
+}
+.shipbar .opt:hover .pop, .shipbar .opt:focus-within .pop { display: block; }
+.shipbar .opt:hover { z-index: 31; }
+.shipbar .pop-card {
+  display: block;
+  background: var(--paper-raised);
+  border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 8px 24px hsl(60 4% 26% / 0.14);
+  padding: 0.85rem 1rem;
+  font: 400 0.83rem/1.55 var(--sans); color: var(--ink-soft);
+}
+.shipbar .pop-card a {
+  display: block; width: fit-content; margin-top: 0.6rem;
+  font: 500 0.78rem/1 var(--mono); color: var(--ink);
+  text-decoration: none; border-bottom: 1.5px solid var(--gold-deep); padding-bottom: 1px;
+}
+.shipbar .pop-card a:hover { color: var(--gold-deep); }
+
+/* Tabs on the config block: Essentials, or every option revealed below it */
+.knob-tabs { display: flex; gap: 4px; margin-top: 1.25rem; }
+.knob-tabs button {
+  font: 500 0.75rem/1 var(--mono);
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--line); border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: transparent; color: var(--ink-soft);
+  cursor: pointer;
+}
+.knob-tabs button:hover { color: var(--ink); }
+.knob-tabs button[aria-pressed='true'] { background: var(--night); color: var(--night-ink); border-color: var(--night); }
+.knob-tabs + .knob-basic > pre:first-child,
+.knob-tabs ~ .knob-full > pre:first-child { margin-top: 0; border-top-left-radius: 0; }
+.knob-full { display: none; }
+[data-knobs='full'] .knob-full { display: block; }
+[data-knobs='full'] .knob-basic { display: none; }
+
+/* Shown in custom tabs while no endpoint is saved */
+.ship-callout {
+  border: 1px solid var(--gold-deep);
+  background: hsl(43 92% 53% / 0.12);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+}
+.prose .ship-callout a { text-decoration: none; border-bottom: 1.5px solid var(--gold-deep); font-weight: 500; }
+.prose .ship-callout a:hover { color: var(--gold-deep); }
+
+/* Content variants: exactly one target's blocks are visible. */
+.ship { display: none; }
+[data-ship='bronto'] .ship-bronto,
+[data-ship='collector'] .ship-collector,
+[data-ship='custom'] .ship-custom { display: block; }
+
+/* Until the deferred script has swapped hosts / placeholders, hide the affected
+   code so a saved region or endpoint never flashes its unswapped value. */
+html[data-region='us']:not([data-region-ready]) .ship-bronto pre code { visibility: hidden; }
+html[data-endpoint-saved]:not([data-sub-ready]) .ship-custom pre code { visibility: hidden; }
+
+/* Custom-endpoint form on the setup page */
+.otlp-form { max-width: 26rem; display: grid; gap: 1rem; margin-top: 1.5rem; }
+.otlp-form label { display: grid; gap: 0.35rem; font-size: 0.9rem; font-weight: 500; }
+.otlp-form input {
+  font: 400 0.9rem/1.4 var(--mono);
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--paper-raised); color: var(--ink);
+}
+.otlp-form input:focus-visible { outline: 2px solid var(--night); outline-offset: 0; border-color: transparent; }
+.otlp-form .buttons { display: flex; gap: 0.6rem; align-items: center; }
+.otlp-form button {
+  font: 700 0.9rem/1 var(--sans);
+  padding: 0.7rem 1.2rem;
+  border: 0; border-radius: 999px;
+  background: var(--gold); color: var(--night);
+  cursor: pointer;
+}
+.otlp-form button:hover { background: #e0a30f; }
+.otlp-form button.secondary { background: transparent; border: 1px solid var(--line); color: var(--ink-soft); font-weight: 500; }
+.otlp-form button.secondary:hover { color: var(--ink); border-color: var(--ink-soft); }
+.otlp-form .form-note { font-size: 0.8rem; color: var(--ink-soft); margin: 0; }
+
+/* ---------- episode cards ---------- */
+
+.episodes { padding-block: 1rem 2rem; }
+.episodes h2 { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.yt-link { font-family: var(--mono); font-size: 0.78rem; text-decoration: none; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 0.45rem; border-bottom: 1.5px solid var(--gold-deep); padding-bottom: 1px; }
+.yt-link:hover { color: var(--gold-deep); }
+.yt-link svg { width: 1.15em; height: 1.15em; }
+
+/* Signal chips: which of traces / metrics / logs an episode exports */
+.sig-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.sig {
+  font: 500 0.68rem/1 var(--mono);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  border: 1px solid var(--line); border-radius: 5px;
+  padding: 0.3rem 0.45rem;
+  color: var(--ink-soft); background: var(--paper-raised);
+}
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1rem; padding: 0; list-style: none; }
+.card-grid li { display: flex; }
+.card {
+  position: relative;
+  flex: 1;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.4rem 1.4rem 1.2rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+a.card { text-decoration: none; }
+a.card:hover { border-color: var(--gold-deep); transform: translateY(-2px); color: inherit; }
+.card .num { font-family: var(--mono); font-size: 0.75rem; color: var(--gold-deep); display: inline-flex; align-items: center; gap: 0.35rem; }
+.card .num svg { width: 1.1em; height: 1.1em; }
+
+/* The standing invitation at the end of the grid */
+.card.request { border-style: dashed; background: transparent; }
+.card.request:hover { border-style: solid; }
+.request-cta {
+  font: 500 0.78rem/1 var(--mono);
+  color: var(--ink);
+  border-bottom: 1.5px solid var(--gold-deep);
+  width: fit-content; padding-bottom: 1px;
+}
+.card h3 { font-size: 1.25rem; letter-spacing: -0.01em; }
+.card p { font-size: 0.92rem; color: var(--ink-soft); flex: 1; }
+
+/* ---------- episode page: main column + sticky video rail ---------- */
+
+.episode-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  grid-template-areas: 'intro rail' 'body rail';
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(2rem, 4vw, 3.5rem);
+  padding-block: clamp(2rem, 5vw, 3.25rem) 0;
+}
+.episode-intro { grid-area: intro; }
+.episode-body { grid-area: body; margin-top: 1.25rem; }
+.episode-rail { grid-area: rail; align-self: start; position: sticky; top: 1.25rem; }
+
+:is(.episode-header, .episode-intro) .eyebrow-row { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem 1rem; }
+:is(.episode-header, .episode-intro) .eyebrow { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-deep); }
+:is(.episode-header, .episode-intro) .sig { font-size: 0.6rem; padding: 0.24rem 0.4rem; }
+:is(.episode-header, .episode-intro) h1 { font-size: clamp(2rem, 5vw, 3.1rem); letter-spacing: -0.02em; line-height: 1.1; margin-top: 0.5rem; }
+:is(.episode-header, .episode-intro) .lede { max-width: var(--measure); margin-top: 1rem; font-size: 1.1rem; color: var(--ink-soft); }
+
+/* the setup page keeps the plain block header */
+.episode-header { padding-block: clamp(2.5rem, 6vw, 4rem) 0; }
+
+.video-slot .facade, .video-slot iframe, .video-slot .placeholder {
+  width: 100%; aspect-ratio: 9 / 16; border: 0; border-radius: 14px; display: block;
+}
+.video-slot .facade {
+  position: relative; overflow: hidden; padding: 0;
+  background: var(--night); cursor: pointer;
+}
+.video-slot .facade img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-slot .facade .play {
+  position: absolute; inset: 0; display: grid; place-content: center;
+}
+.video-slot .facade .play span {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: hsl(216 24% 19% / 0.85); color: #fff;
+  display: grid; place-content: center;
+}
+.video-slot .facade:hover .play span { background: hsl(216 24% 19%); }
+.video-slot .placeholder {
+  background: var(--night); color: var(--night-ink);
+  display: grid; place-content: center; gap: 0.4rem; text-align: center;
+  font-family: var(--mono); font-size: 0.8rem; line-height: 1.5;
+}
+
+.episode-links { list-style: none; padding: 0; margin-top: 1.4rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.5rem; font-size: 0.9rem; }
+.episode-links a { display: inline-flex; align-items: center; gap: 0.45rem; text-decoration: none; color: var(--ink-soft); border-bottom: 1.5px solid var(--gold-deep); padding-bottom: 1px; }
+.episode-links a:hover { color: var(--gold-deep); }
+.episode-links svg { width: 1em; height: 1em; }
+
+/* Take-away actions, stacked under the video */
+.episode-actions { display: grid; gap: 6px; margin-top: 0.7rem; }
+.episode-actions a.share-link {
+  display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+  font: 500 0.75rem/1 var(--mono);
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--paper-raised);
+  padding: 0.55rem 0.6rem;
+  color: var(--ink); cursor: copy;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.episode-actions a.share-link svg { width: 1em; height: 1em; color: var(--ink-soft); }
+.episode-actions a.share-link:hover { border-color: var(--gold-deep); color: var(--ink); }
+.episode-actions a.share-link span { display: inline-block; }
+
+.episode-shipbar { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 1px solid var(--line); padding-block: 0.7rem; }
+.episode-layout .prose { padding-block: 2rem 1rem; }
+
+@media (max-width: 900px) {
+  .episode-layout { display: block; }
+  .episode-rail { position: static; max-width: 290px; margin: 1.75rem auto 0; }
+  .episode-body { margin-top: 1.5rem; }
+}
+
+/* Previous / next episode */
+.episode-nav { margin-top: 3rem; display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.episode-nav a {
+  font: 500 0.82rem/1.5 var(--mono);
+  text-decoration: none; color: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: 10px;
+  padding: 0.7rem 1rem;
+  background: var(--paper-raised);
+}
+.episode-nav a:hover { border-color: var(--gold-deep); color: var(--ink); }
+.episode-nav .next { margin-left: auto; }
+
+/* ---------- markdown body ---------- */
+
+.prose { padding-block: 2.5rem 2rem; }
+.prose .measure > * { max-width: var(--measure); }
+.prose .measure > h2 { font-size: 1.55rem; letter-spacing: -0.015em; margin-top: 2.8rem; }
+.prose .measure > h3 { font-size: 1.15rem; margin-top: 2rem; }
+.prose .measure > h2:first-child { margin-top: 0; }
+.prose .measure > h2 + *, .prose .measure > h3 + * { margin-top: 0.8rem; }
+.prose p, .prose ul, .prose ol { margin-top: 1rem; }
+.prose li + li { margin-top: 0.35rem; }
+.prose code { font-family: var(--mono); font-size: 0.85em; background: hsl(60 4% 26% / 0.08); padding: 0.1em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+.prose pre { margin-top: 1rem; border-radius: 10px; padding: 1.1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; overflow-x: auto; }
+.prose pre.astro-code { background: var(--night) !important; }
+.prose pre code { background: none; padding: 0; font-size: inherit; }
+.prose .ship > :first-child { margin-top: 1rem; }
+.prose .table-scroll { overflow-x: auto; margin-top: 1rem; }
+.prose table { border-collapse: collapse; font-size: 0.9rem; }
+.prose .table-scroll table { margin-top: 0; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 0.5rem 0.8rem; text-align: left; }
+.prose th { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); }
+.prose blockquote { border-left: 3px solid var(--gold); padding: 0.2rem 0 0.2rem 1.1rem; color: var(--ink-soft); margin-top: 1rem; }
+.prose hr { border: 0; border-top: 1px solid var(--line); margin-block: 2.5rem; }
+
+/* Advanced sections */
+.prose details { border: 1px solid var(--line); border-radius: 10px; background: var(--paper-raised); padding: 0 1.25rem; margin-top: 1.25rem; }
+.prose details > summary {
+  cursor: pointer; padding-block: 0.9rem;
+  font-weight: 500; list-style: none;
+}
+.prose details > summary::before { content: '+'; font-family: var(--mono); color: var(--gold-deep); margin-right: 0.6rem; font-weight: 400; }
+.prose details[open] > summary::before { content: '−'; }
+.prose details > summary::-webkit-details-marker { display: none; }
+.prose details > :last-child { margin-bottom: 1.1rem; }
+
+/* Copy button on code blocks */
+.prose pre { position: relative; }
+.copy-btn {
+  position: absolute; top: 0.55rem; right: 0.55rem;
+  font: 500 0.7rem/1 var(--mono);
+  color: var(--night-ink); background: hsl(48 26% 96% / 0.12);
+  border: 1px solid hsl(48 26% 96% / 0.25); border-radius: 6px;
+  padding: 0.35rem 0.55rem; cursor: pointer;
+  opacity: 0; transition: opacity 100ms ease;
+}
+pre:hover .copy-btn, .copy-btn:focus-visible { opacity: 1; }
+@media (hover: none) {
+  .copy-btn { opacity: 1; }
+}
+.copy-btn:hover { background: hsl(48 26% 96% / 0.22); }

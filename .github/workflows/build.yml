@@ -1,0 +1,45 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: every episode carries all three target variants
+        run: |
+          for f in src/content/episodes/*.md; do
+            n=$(grep -c 'class="ship ship-' "$f")
+            if [ "$n" -ne 3 ]; then
+              echo "$f has $n ship divs, expected 3 (ship-bronto, ship-collector, ship-custom)"
+              exit 1
+            fi
+          done
+      - name: knob-full blocks agree on the extra options
+        run: |
+          python3 - <<'EOF'
+          import re, sys, glob
+          for f in glob.glob('src/content/episodes/*.md'):
+              s = open(f).read()
+              fulls = re.findall(r'<div class="knob-full">.*?```json\n(.*?)\n```', s, re.S)
+              if len(fulls) < 2: continue
+              basics = re.findall(r'<div class="knob-basic">.*?```json\n(.*?)\n```', s, re.S)
+              extras = []
+              for full, basic in zip(fulls, basics):
+                  base_keys = set(re.findall(r'"([A-Z_]+)":', basic))
+                  extras.append(sorted(l.strip() for l in full.split('\n')
+                                       if (m := re.match(r'\s*"([A-Z_]+)":', l)) and m.group(1) not in base_keys))
+              if any(e != extras[0] for e in extras):
+                  sys.exit(f'{f}: the knob-full blocks disagree on the extra options — keep them identical')
+          print('knob-full blocks consistent')
+          EOF
