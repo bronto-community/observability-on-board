@@ -147,7 +147,8 @@ export const GET: APIRoute = async ({ params, url }) => {
       if (dataset) {
         text = text
           .replace(/x-bronto-dataset=[^,"'\s]+/g, () => `x-bronto-dataset=${dataset}`)
-          .replace(/telemetry-service-name=.+/g, () => `telemetry-service-name=${dataset}`);
+          .replace(/telemetry-service-name=.+/g, () => `telemetry-service-name=${dataset}`)
+          .replace(/OTEL_SERVICE_NAME=[^,"'\s]+/g, () => `OTEL_SERVICE_NAME=${dataset}`);
       }
     }
     if (s.target === 'custom') {
