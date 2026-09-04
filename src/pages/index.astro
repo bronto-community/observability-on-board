@@ -4,7 +4,7 @@ import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
 import ShipBar from '../components/ShipBar.astro';
 
-const episodes = (await getCollection('episodes')).sort(
+const episodes = (await getCollection('episodes', (e) => !e.data.hidden)).sort(
   (a, b) => a.data.episode - b.data.episode
 );
 

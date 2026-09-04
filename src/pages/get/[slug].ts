@@ -117,7 +117,10 @@ export const GET: APIRoute = async ({ params, url }) => {
   const episodes = await getCollection('episodes');
   const entry = episodes.find((e) => e.id === params.slug);
   if (!entry || !entry.body) {
-    const slugs = episodes.map((e) => `#   ${SITE}/get/${e.id}`).join('\n');
+    const slugs = episodes
+      .filter((e) => !e.data.hidden)
+      .map((e) => `#   ${SITE}/get/${e.id}`)
+      .join('\n');
     return respond(`# unknown episode "${params.slug}" — available:\n${slugs}`, 404);
   }
 

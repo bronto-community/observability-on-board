@@ -6,8 +6,9 @@ interface Props {
   description: string;
   image?: string;
   ogType?: string;
+  noindex?: boolean;
 }
-const { title, description, image = '/og-default.png', ogType = 'website' } = Astro.props;
+const { title, description, image = '/og-default.png', ogType = 'website', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -30,6 +31,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     </script>
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="Observability on Board" />

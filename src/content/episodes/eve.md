@@ -7,6 +7,7 @@ takeaway: 'Every model call reads ~7,000 tokens and writes ~200, a 30:1 ratio on
 signals: ['traces']
 docs: 'https://eve.dev/docs/guides/instrumentation'
 verified: '2026-09-04'
+hidden: true
 ---
 
 ## Switch it on

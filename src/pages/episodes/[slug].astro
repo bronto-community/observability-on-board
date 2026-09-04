@@ -6,10 +6,20 @@ import ShipBar from '../../components/ShipBar.astro';
 
 export async function getStaticPaths() {
   const episodes = (await getCollection('episodes')).sort((a, b) => a.data.episode - b.data.episode);
-  return episodes.map((e, i) => ({
-    params: { slug: e.id },
-    props: { entry: e, prev: episodes[i - 1] ?? null, next: episodes[i + 1] ?? null },
-  }));
+  // Hidden episodes still get a page, but they are not in the chain: linking one from
+  // its neighbour would put it back in front of every reader.
+  const listed = episodes.filter((e) => !e.data.hidden);
+  return episodes.map((e) => {
+    const i = listed.findIndex((x) => x.id === e.id);
+    return {
+      params: { slug: e.id },
+      props: {
+        entry: e,
+        prev: i === -1 ? null : (listed[i - 1] ?? null),
+        next: i === -1 ? null : (listed[i + 1] ?? null),
+      },
+    };
+  });
 }
 
 const { entry, prev, next } = Astro.props;
@@ -53,6 +63,7 @@ const videoLd = entry.data.video
   title={`${entry.data.title} · ${entry.data.tool} OpenTelemetry`}
   description={ledePlain}
   ogType="article"
+  noindex={entry.data.hidden}
 >
   <Fragment slot="head">
     {videoLd && <script type="application/ld+json" set:html={videoLd} />}
