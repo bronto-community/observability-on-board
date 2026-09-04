@@ -6,8 +6,8 @@ description: 'eve runs `agent/instrumentation.ts` at startup, and creating that 
 takeaway: 'Every model call reads ~7,000 tokens and writes ~200, a 30:1 ratio on every step of every turn.'
 signals: ['traces']
 docs: 'https://eve.dev/docs/guides/instrumentation'
+video: 'https://www.youtube-nocookie.com/embed/yZkz4xDFrS4'
 verified: '2026-09-04'
-hidden: true
 ---
 
 ## Switch it on
