@@ -382,7 +382,7 @@ a.card:hover { border-color: var(--gold-deep); transform: translateY(-2px); colo
 .prose .measure > h2 + *, .prose .measure > h3 + * { margin-top: 0.8rem; }
 .prose p, .prose ul, .prose ol { margin-top: 1rem; }
 .prose li + li { margin-top: 0.35rem; }
-.prose code { font-family: var(--mono); font-size: 0.85em; background: hsl(60 4% 26% / 0.08); padding: 0.1em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+.prose code, .lede code { font-family: var(--mono); font-size: 0.85em; background: hsl(60 4% 26% / 0.08); padding: 0.1em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
 .prose pre { margin-top: 1rem; border-radius: 10px; padding: 1.1rem 1.25rem; font-size: 0.85rem; line-height: 1.6; overflow-x: auto; }
 .prose pre.astro-code { background: var(--night) !important; }
 .prose pre code { background: none; padding: 0; font-size: inherit; }

@@ -19,8 +19,12 @@ Frontmatter per episode: `title`, `tool`, `episode`, `description`, `takeaway`,
 `signals` (`traces`/`metrics`/`logs`), `docs` (link to the tool's own documentation,
 required), plus optional `video` (a 9:16 YouTube embed URL,
 `https://www.youtube-nocookie.com/embed/<id>`), `blog` (a write-up, ours or
-third-party), `share` (override for the ote.li short link; defaults to ote.li/with/<slug>) and `verified` (date the commands last
-ran end to end).
+third-party), `share` (override for the ote.li short link; defaults to ote.li/with/<slug>), `verified` (date the commands last
+ran end to end) and `hidden`.
+
+`hidden: true` ships an episode without announcing it. The page and its `/get/<slug>`
+text form are built and reachable by URL, but it is left off the landing page, out of the
+prev/next chain, out of the sitemap and marked `noindex`. Remove the line to publish.
 
 ```bash
 npm install

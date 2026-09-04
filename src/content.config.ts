@@ -15,6 +15,10 @@ const episodes = defineCollection({
     blog: z.string().url().optional(),
     share: z.string().url().optional(),
     verified: z.string().optional(),
+    // Built and reachable at its URL, but kept off the landing page, out of the
+    // prev/next chain, out of the sitemap and marked noindex. For shipping an
+    // episode before it is announced.
+    hidden: z.boolean().default(false),
   }),
 });
 
