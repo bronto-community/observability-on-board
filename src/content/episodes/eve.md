@@ -11,11 +11,11 @@ verified: '2026-09-04'
 
 ## Switch it on
 
-Create `agent/instrumentation.ts`. eve finds it by name and runs it before any agent code;
-there is no enable flag, so creating the file is what turns telemetry on. Traces cover every
-turn, each model step with its token counts, and each tool call. Keep the endpoint in the file
-rather than in `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`: the workflow runtime bundles its own OTel
-SDK, which reads that variable and exports every span again without your headers.
+Create `agent/instrumentation.ts`. eve finds it by name and runs it at startup, before any
+agent code, and there is no enable flag to set. Traces cover every turn, each model step with
+its token counts, and each tool call. Keep the endpoint in the file rather than in
+`OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`: the workflow runtime bundles its own OTel SDK, which
+reads that variable and exports every span again without your headers.
 
 <div class="ship ship-bronto">
 
