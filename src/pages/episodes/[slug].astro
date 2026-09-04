@@ -18,6 +18,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const blogHost = entry.data.blog ? new URL(entry.data.blog).hostname.replace(/^www\./, '') : null;
 const share = entry.data.share ?? `https://ote.li/with/${entry.id}`;
 const videoId = entry.data.video ? entry.data.video.split('/').pop() : null;
+
+// The lede renders `code` spans; meta tags and JSON-LD take the stripped form, since
+// backticks would show up verbatim in a search result.
+const escapeHtml = (s: string) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!);
+const ledePlain = entry.data.description.replaceAll('`', '');
+const ledeHtml = escapeHtml(entry.data.description).replace(/`([^`]+)`/g, '<code>$1</code>');
 // Shorts thumbnails vary: oardefault is the true vertical frame but only exists for
 // some videos; maxresdefault beats hqdefault everywhere. Probed at build time.
 async function bestThumb(id: string) {
@@ -35,7 +41,7 @@ const videoLd = entry.data.video
       '@context': 'https://schema.org',
       '@type': 'VideoObject',
       name: entry.data.title,
-      description: entry.data.description,
+      description: ledePlain,
       thumbnailUrl: thumb,
       uploadDate: entry.data.verified,
       embedUrl: entry.data.video,
@@ -45,7 +51,7 @@ const videoLd = entry.data.video
 
 <Base
   title={`${entry.data.title} · ${entry.data.tool} OpenTelemetry`}
-  description={entry.data.description}
+  description={ledePlain}
   ogType="article"
 >
   <Fragment slot="head">
@@ -60,7 +66,7 @@ const videoLd = entry.data.video
         </span>
       </p>
       <h1>{entry.data.title}</h1>
-      <p class="lede">{entry.data.description}</p>
+      <p class="lede" set:html={ledeHtml} />
       <ul class="episode-links">
         <li>
           <a href={entry.data.docs}><Icon name="lucide:book-open" /> {entry.data.tool} docs</a>
