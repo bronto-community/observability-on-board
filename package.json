@@ -9,12 +9,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/vercel": "^11.0.8",
-    "astro": "^7.2.9",
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vercel": "^11.0.9",
+    "astro": "^7.2.10",
     "astro-icon": "^1.2.0"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.126"
+    "@iconify-json/lucide": "^1.2.128"
   }
 }
