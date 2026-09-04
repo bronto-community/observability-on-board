@@ -1,7 +1,7 @@
 ---
 title: 'eve already traces every agent turn'
 tool: 'eve'
-episode: 4
+episode: 5
 description: 'eve runs `agent/instrumentation.ts` at startup, and creating that file is what turns telemetry on. One file traces every turn, model step and tool call.'
 takeaway: 'Every model call reads ~7,000 tokens and writes ~200, a 30:1 ratio on every step of every turn.'
 signals: ['traces']
