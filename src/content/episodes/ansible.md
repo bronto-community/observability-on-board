@@ -6,8 +6,8 @@ description: 'Ansible ships an OpenTelemetry callback plugin in community.genera
 takeaway: 'Three hosts finish every task in under a second; the fourth takes the whole 13-second play, and the trace names it.'
 signals: ['traces']
 docs: 'https://docs.ansible.com/ansible/latest/collections/community/general/opentelemetry_callback.html'
+video: 'https://www.youtube-nocookie.com/embed/zYzCoRf1Yxk'
 verified: '2026-09-14'
-hidden: true
 ---
 
 ## Switch it on
