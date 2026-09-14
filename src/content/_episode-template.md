@@ -21,7 +21,9 @@
 # 4. Setup-guide links point at /setup/#collector and /setup/#custom.
 #
 # Voice: config first under "## Switch it on"; a lead-in sentence, the block,
-# at most one short trailing note per target. No parentheticals, no
+# at most one short trailing note per target. When a target needs more than one
+# block, put one short line before each saying where it goes: a terminal, a file
+# by name, the environment. /get/<slug> turns those lines into # comments. No parentheticals, no
 # overexplaining, no sections after the config. Signals use the official OTel
 # names only. See the rules in README.md.
 title: '<Tool> already speaks OpenTelemetry'
