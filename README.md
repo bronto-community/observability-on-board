@@ -52,6 +52,8 @@ Rules for episode pages:
 4. Keep it brief. What-you-get inventories, failure catalogues and tuning notes are
    deliberately left out for now, and a note that isn't needed for success gets cut.
    No parenthetical asides. Don't overexplain.
+5. Say where each block goes. When a target has more than one block, one short line
+   before each names the place: a terminal, a file by name, the environment.
 
 ## License
 
