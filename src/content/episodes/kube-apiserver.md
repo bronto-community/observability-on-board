@@ -18,8 +18,8 @@ server at it. The kubelet watches that directory, so saving the manifest is what
 API server, and `kubectl` is refused for about 45 seconds while it does. The API server
 speaks OTLP over gRPC and has no field for a header, so it always sends to a Collector, which
 holds the key. Every request then becomes a trace through the filter chain, admission with
-each webhook named, and the etcd transaction. Verified on Kubernetes 1.36; the two files are
-the whole change on 1.27 and newer.
+each webhook named, and the etcd transaction. Needs Kubernetes 1.27 or newer, where the two
+files became the whole change.
 
 <div class="ship ship-bronto">
 

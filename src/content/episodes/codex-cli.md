@@ -15,7 +15,7 @@ verified: '2026-09-18'
 Add an `[otel]` block to `~/.codex/config.toml`. Codex ships the exporter and leaves it
 switched off; every turn then arrives as logs, one record per event, with the token counts on
 each completed response. The endpoint is used exactly as written, so name the logs path
-yourself. Verified on Codex CLI 0.154.0.
+yourself.
 
 <div class="ship ship-bronto">
 
