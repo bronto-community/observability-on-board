@@ -6,8 +6,8 @@ description: 'One [otel] block in ~/.codex/config.toml switches on an OTLP log e
 takeaway: 'One prompt, nine model calls: 134.8k tokens sent, 2.1k read back.'
 signals: ['logs']
 docs: 'https://learn.chatgpt.com/docs/config-file/config-advanced'
+video: 'https://www.youtube-nocookie.com/embed/k-e-76zvkW4'
 verified: '2026-09-18'
-hidden: true
 ---
 
 ## Switch it on
