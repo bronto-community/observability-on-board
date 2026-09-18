@@ -12,16 +12,13 @@ hidden: true
 
 ## Switch it on
 
-Telemetry is a top-level key in the `router.yaml` the router already loads, and there is no
-environment-variable path: since v2.13.0 the router refuses to start when any
-`OTEL_EXPORTER_OTLP_*` variable is set. Every client operation then becomes one trace, with a
-span per query-plan node, per subgraph fetch and per HTTP call underneath it. `protocol: http`
-is the line that matters, because the default is gRPC. Keep each `endpoint` bare, the router
-appends `/v1/traces` and `/v1/metrics` itself.
+Add a `telemetry` key to the `router.yaml` the router already loads. Every client operation
+then becomes one trace, with a span per query-plan node and per subgraph fetch. `protocol:
+http` matters, because the default is gRPC, and each `endpoint` stays bare because the router
+appends the path itself. There is no environment-variable path: since v2.13.0 the router
+refuses to start when any `OTEL_EXPORTER_OTLP_*` variable is set.
 
 <div class="ship ship-bronto">
-
-In `router.yaml`, alongside the `supergraph` key:
 
 ```yaml
 telemetry:
@@ -48,14 +45,12 @@ telemetry:
         service_name: storefront-router
 ```
 
-`${env.BRONTO_API_KEY}` is expanded against the router's own process environment, so under
-Docker Compose the variable has to be listed under `environment:` for the router service.
-With it empty the router still answers every request and exports nothing.
+`${env.BRONTO_API_KEY}` comes from the router's own process environment, so under Compose
+list it under the service's `environment:`. Empty, the router answers every request and
+exports nothing.
 
 </div>
 <div class="ship ship-collector">
-
-In `router.yaml`, alongside the `supergraph` key:
 
 ```yaml
 telemetry:
@@ -84,8 +79,6 @@ This assumes a Collector listening on `localhost:4318`; the
 
 This uses the endpoint and auth header you saved in the
 [setup guide](/setup/#custom).
-
-In `router.yaml`, alongside the `supergraph` key:
 
 ```yaml
 telemetry:

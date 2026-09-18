@@ -12,15 +12,14 @@ hidden: true
 
 ## Switch it on
 
-Tracing lives in two files on the control-plane node. `/etc/kubernetes/tracing.yaml` holds
-the endpoint and the sampling rate, and `--tracing-config-file` in the static pod manifest
-points the API server at it. Saving the manifest is the restart: the kubelet watches that
-directory and brings the API server back with the flag, which takes about 45 seconds and
-refuses `kubectl` while it happens. The API server exports OTLP over gRPC and has no field
-for a header, so it always talks to a Collector, and the Collector holds the key and
-forwards over HTTP. Every request then becomes a trace covering the filter chain, admission
-with each webhook named, the etcd transaction and the response encoding. Verified on
-Kubernetes 1.36; the two files are the whole change on 1.27 and newer.
+Two files on the control-plane node. `/etc/kubernetes/tracing.yaml` holds the endpoint and
+the sampling rate, and `--tracing-config-file` in the static pod manifest points the API
+server at it. The kubelet watches that directory, so saving the manifest is what restarts the
+API server, and `kubectl` is refused for about 45 seconds while it does. The API server
+speaks OTLP over gRPC and has no field for a header, so it always sends to a Collector, which
+holds the key. Every request then becomes a trace through the filter chain, admission with
+each webhook named, and the etcd transaction. Verified on Kubernetes 1.36; the two files are
+the whole change on 1.27 and newer.
 
 <div class="ship ship-bronto">
 

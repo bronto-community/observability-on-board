@@ -12,18 +12,12 @@ hidden: true
 
 ## Switch it on
 
-The `opentelemetry` plugin is in the update centre and bundles the OpenTelemetry Java SDK.
-It is configured through Configuration as Code, so the change is one `openTelemetry:` block
-in the `jenkins.yaml` the controller already boots from, plus a credential holding the key.
-Every build then becomes one trace: the build as the root span, a span per stage and per
-step, and one span for the time the build waited for an executor. `serviceName` is the
-service name the traces arrive under. The protocol line is not optional, the plugin's
-default is gRPC.
+Install the `opentelemetry` plugin from the update centre, then add an `openTelemetry:`
+block to the `jenkins.yaml` the controller already boots from. Every build becomes one trace:
+the build as the root span, a span per stage and per step, and one span for the time it
+waited for an executor. The protocol line is not optional, the plugin's default is gRPC.
 
 <div class="ship ship-bronto">
-
-In the `jenkins.yaml` the controller boots from, with `BRONTO_API_KEY` in the controller's
-environment:
 
 ```yaml
 unclassified:
@@ -46,13 +40,11 @@ credentials:
               secret: ${BRONTO_API_KEY}
 ```
 
-Restart the controller. A Configuration as Code reload updates the plugin's form and leaves
-the exporter as it was.
+`BRONTO_API_KEY` comes from the controller's own environment. Restart it after the edit, a
+Configuration as Code reload updates the plugin's form and leaves the exporter as it was.
 
 </div>
 <div class="ship ship-collector">
-
-In the `jenkins.yaml` the controller boots from:
 
 ```yaml
 unclassified:
@@ -72,8 +64,6 @@ after the edit, a Configuration as Code reload does not reach the exporter.
 
 This uses the endpoint and auth header you saved in the
 [setup guide](/setup/#custom).
-
-In the `jenkins.yaml` the controller boots from:
 
 ```yaml
 unclassified:
