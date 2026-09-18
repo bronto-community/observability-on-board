@@ -12,13 +12,11 @@ hidden: true
 
 ## Switch it on
 
-The OpenTelemetry Maven extension is a contrib artifact that Maven's own core extension
-mechanism loads, so there is no agent, no pom change and nothing to install: Maven resolves
-the jar from Central on the next build. The whole configuration is two files in `.mvn/`, one
-that declares the extension and one that carries three `-D` lines, and the API key stays in
-the environment, because neither file expands shell variables. Every `mvn` run then becomes
-one trace, with a span per reactor module and a span per plugin goal carrying the plugin, the
-goal and the lifecycle phase.
+Declare the extension in `.mvn/extensions.xml`, then put three `-D` lines in
+`.mvn/maven.config` next to it. Maven resolves the jar from Central on the next build, so
+there is nothing to install and no pom change. Every `mvn` run then becomes one trace, with a
+span per reactor module and a span per plugin goal. The key stays in the environment, because
+neither `.mvn/` file expands shell variables.
 
 <div class="ship ship-bronto">
 
