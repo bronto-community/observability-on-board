@@ -2,11 +2,11 @@
 title: 'Codex CLI already reports what every turn costs'
 tool: 'OpenAI Codex CLI'
 episode: 7
-description: 'Codex CLI has an [otel] block in ~/.codex/config.toml. Four lines switch on an OTLP log exporter that reports the token cost of every turn.'
+description: 'One [otel] block in ~/.codex/config.toml switches on an OTLP log exporter that reports what every Codex turn sent and read back, token by token.'
 takeaway: 'One prompt, nine model calls: 134.8k tokens sent, 2.1k read back.'
 signals: ['logs']
-docs: 'https://developers.openai.com/codex/config-reference'
-verified: '2026-09-16'
+docs: 'https://learn.chatgpt.com/docs/config-file/config-advanced'
+verified: '2026-09-18'
 hidden: true
 ---
 
@@ -28,7 +28,13 @@ In `~/.codex/config.toml`:
 [otel]
 environment = "production"
 log_user_prompt = false
-exporter = { otlp-http = { endpoint = "https://ingestion.eu.bronto.io/v1/logs", protocol = "binary", headers = { "x-bronto-api-key" = "<BRONTO_API_KEY>" } } }
+
+[otel.exporter.otlp-http]
+endpoint = "https://ingestion.eu.bronto.io/v1/logs"
+protocol = "binary"
+
+[otel.exporter.otlp-http.headers]
+x-bronto-api-key = "<BRONTO_API_KEY>"
 ```
 
 Codex does not expand `$VAR` in a header value, so the key goes in literally.
@@ -42,14 +48,17 @@ In `~/.codex/config.toml`:
 [otel]
 environment = "production"
 log_user_prompt = false
-exporter = { otlp-http = { endpoint = "http://localhost:4318/v1/logs", protocol = "binary" } }
+
+[otel.exporter.otlp-http]
+endpoint = "http://localhost:4318/v1/logs"
+protocol = "binary"
 ```
 
 This assumes a Collector listening on `localhost:4318`; the
 [Local Collector setup](/setup/#collector) shows how to start one.
 
 </div>
-<div class="ship ship-custom" data-empty-auth="dummy">
+<div class="ship ship-custom">
 
 This uses the endpoint and auth header you saved in the
 [setup guide](/setup/#custom).
@@ -60,7 +69,13 @@ In `~/.codex/config.toml`:
 [otel]
 environment = "production"
 log_user_prompt = false
-exporter = { otlp-http = { endpoint = "YOUR_OTLP_ENDPOINT/v1/logs", protocol = "binary", headers = { "YOUR_AUTH_HEADER" = "YOUR_AUTH_VALUE" } } }
+
+[otel.exporter.otlp-http]
+endpoint = "YOUR_OTLP_ENDPOINT/v1/logs"
+protocol = "binary"
+
+[otel.exporter.otlp-http.headers]
+YOUR_AUTH_HEADER = "YOUR_AUTH_VALUE"
 ```
 
 </div>
