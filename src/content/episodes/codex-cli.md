@@ -5,7 +5,7 @@ episode: 7
 description: 'Codex CLI has an [otel] block in ~/.codex/config.toml. Four lines switch on an OTLP log exporter that reports the token cost of every turn.'
 takeaway: 'One prompt, nine model calls: 134.8k tokens sent, 2.1k read back.'
 signals: ['logs']
-docs: 'https://developers.openai.com/codex/config-reference'
+docs: 'https://learn.chatgpt.com/docs/config-file/config-advanced'
 verified: '2026-09-16'
 hidden: true
 ---
