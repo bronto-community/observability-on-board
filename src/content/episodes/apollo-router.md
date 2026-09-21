@@ -6,8 +6,8 @@ description: 'Apollo Router reads one config file, and a telemetry block in it t
 takeaway: 'The product page takes 261 ms, and 256 ms of it is one subgraph the router could not call until the catalog had answered.'
 signals: ['traces', 'metrics']
 docs: 'https://www.apollographql.com/docs/graphos/routing/observability/router-telemetry-otel/telemetry-pipelines/trace-exporters/otlp'
+video: 'https://www.youtube-nocookie.com/embed/8X-z_dKAt4A'
 verified: '2026-09-14'
-hidden: true
 ---
 
 ## Switch it on
