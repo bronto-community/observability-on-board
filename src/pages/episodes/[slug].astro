@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Base from '../../layouts/Base.astro';
 import ShipBar from '../../components/ShipBar.astro';
+import { bestThumb, videoIdOf } from '../../lib/thumb';
 
 export async function getStaticPaths() {
   const episodes = (await getCollection('episodes')).sort((a, b) => a.data.episode - b.data.episode);
@@ -27,24 +28,13 @@ const { Content } = await render(entry);
 const pad = (n: number) => String(n).padStart(2, '0');
 const blogHost = entry.data.blog ? new URL(entry.data.blog).hostname.replace(/^www\./, '') : null;
 const share = entry.data.share ?? `https://ote.li/with/${entry.id}`;
-const videoId = entry.data.video ? entry.data.video.split('/').pop() : null;
+const videoId = videoIdOf(entry.data.video);
 
 // The lede renders `code` spans; meta tags and JSON-LD take the stripped form, since
 // backticks would show up verbatim in a search result.
 const escapeHtml = (s: string) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!);
 const ledePlain = entry.data.description.replaceAll('`', '');
 const ledeHtml = escapeHtml(entry.data.description).replace(/`([^`]+)`/g, '<code>$1</code>');
-// Shorts thumbnails vary: oardefault is the true vertical frame but only exists for
-// some videos; maxresdefault beats hqdefault everywhere. Probed at build time.
-async function bestThumb(id: string) {
-  for (const variant of ['oardefault', 'maxresdefault']) {
-    try {
-      const r = await fetch(`https://i.ytimg.com/vi/${id}/${variant}.jpg`, { method: 'HEAD' });
-      if (r.ok) return `https://i.ytimg.com/vi/${id}/${variant}.jpg`;
-    } catch {}
-  }
-  return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-}
 const thumb = videoId ? await bestThumb(videoId) : null;
 const videoLd = entry.data.video
   ? JSON.stringify({
@@ -63,6 +53,7 @@ const videoLd = entry.data.video
   title={`${entry.data.title} · ${entry.data.tool} OpenTelemetry`}
   description={ledePlain}
   ogType="article"
+  image={`/og/${entry.id}.png`}
   noindex={entry.data.hidden}
 >
   <Fragment slot="head">

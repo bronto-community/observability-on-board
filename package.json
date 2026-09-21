@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "FONTCONFIG_PATH=assets/og/fonts astro dev",
+    "build": "FONTCONFIG_PATH=assets/og/fonts astro build",
     "preview": "astro preview"
   },
   "dependencies": {
