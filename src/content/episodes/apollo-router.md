@@ -13,10 +13,10 @@ hidden: true
 ## Switch it on
 
 Add a `telemetry` key to the `router.yaml` the router already loads. Every client operation
-then becomes one trace, with a span per query-plan node and per subgraph fetch. `protocol:
-http` matters, because the default is gRPC, and each `endpoint` stays bare because the router
-appends the path itself. There is no environment-variable path: since v2.13.0 the router
-refuses to start when any `OTEL_EXPORTER_OTLP_*` variable is set.
+then becomes one trace, with a span per query-plan node and per subgraph fetch. Set
+`protocol: http`, the default is gRPC, and leave each `endpoint` bare, the router appends
+`/v1/traces` and `/v1/metrics` itself. Environment variables are not an option: since
+v2.13.0 the router refuses to start when any `OTEL_EXPORTER_OTLP_*` variable is set.
 
 <div class="ship ship-bronto">
 
@@ -45,9 +45,9 @@ telemetry:
         service_name: storefront-router
 ```
 
-`${env.BRONTO_API_KEY}` comes from the router's own process environment, so under Compose
-list it under the service's `environment:`. Empty, the router answers every request and
-exports nothing.
+The router expands `${env.BRONTO_API_KEY}` from its own process environment, so under
+Compose the key belongs in the router service's `environment:`. Without it the router starts
+cleanly and exports nothing.
 
 </div>
 <div class="ship ship-collector">
