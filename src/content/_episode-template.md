@@ -35,6 +35,7 @@ signals: ['traces', 'metrics', 'logs']
 docs: 'https://example.com/the-tools-own-observability-docs'
 # blog: 'https://bronto.io/blog/...'                     # optional
 # video: 'https://www.youtube-nocookie.com/embed/<id>'   # optional, 9:16 Short
+# card: 'night'   # optional; social preview with the blurred video frame behind white text, default is the badge card
 # share: 'https://ote.li/with-<name>'   # optional override; default is ote.li/with/<slug> via the catch-all redirect
 verified: '2026-01-01'
 # hidden: true    # optional: build the page but keep it off the landing page
