@@ -6,8 +6,8 @@ description: 'OpenRouter can broadcast a trace of every LLM call to any OpenTele
 takeaway: '17 of 75 first attempts were refused with a 429. Every one was retried on another provider, and the agent never said so.'
 signals: ['traces']
 docs: 'https://openrouter.ai/docs/guides/features/broadcast/otel-collector'
+video: 'https://www.youtube-nocookie.com/embed/th_2V197lb0'
 verified: '2026-09-21'
-hidden: true
 ---
 
 ## Switch it on
