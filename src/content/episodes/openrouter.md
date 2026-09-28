@@ -8,6 +8,7 @@ signals: ['traces']
 docs: 'https://openrouter.ai/docs/guides/features/broadcast/otel-collector'
 video: 'https://www.youtube-nocookie.com/embed/th_2V197lb0'
 verified: '2026-09-21'
+hidden: true
 ---
 
 ## Switch it on
