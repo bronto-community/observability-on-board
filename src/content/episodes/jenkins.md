@@ -1,7 +1,7 @@
 ---
 title: 'Jenkins can trace every build'
 tool: 'Jenkins'
-episode: 9
+episode: 10
 description: 'Jenkins has an OpenTelemetry plugin in the update centre. One block in the jenkins.yaml the controller already boots from turns every build into a trace.'
 takeaway: 'The pipeline with the least work is the slowest build: 26 of its 35 seconds are one span, waiting for an executor.'
 signals: ['traces', 'metrics', 'logs']

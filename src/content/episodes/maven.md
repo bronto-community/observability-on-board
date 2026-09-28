@@ -1,7 +1,7 @@
 ---
 title: 'Maven can trace every module and goal'
 tool: 'Maven'
-episode: 11
+episode: 12
 description: "Maven's OpenTelemetry extension loads from .mvn/extensions.xml. Three lines in .mvn/maven.config give you one span per module and per plugin goal."
 takeaway: 'Four threads take the build from 32 seconds to 19; eight threads change nothing, and the trace names the chain that sets the floor.'
 signals: ['traces']
