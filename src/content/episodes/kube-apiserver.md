@@ -1,7 +1,7 @@
 ---
 title: 'The Kubernetes API server already traces every request'
 tool: 'Kubernetes API server'
-episode: 10
+episode: 11
 description: 'Kubernetes has traced every API server request since 1.27. A four-line file and one flag in the static pod manifest turn each request into a trace.'
 takeaway: 'The same Deployment takes 5 ms in one namespace and 157 ms in the next, and the trace names the validating webhook that cost the difference.'
 signals: ['traces']
