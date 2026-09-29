@@ -6,6 +6,7 @@ description: 'Jenkins has an OpenTelemetry plugin in the update centre. One bloc
 takeaway: 'The pipeline with the least work is the slowest build: 26 of its 35 seconds are one span, waiting for an executor.'
 signals: ['traces', 'metrics', 'logs']
 docs: 'https://github.com/jenkinsci/opentelemetry-plugin/blob/master/docs/setup-and-configuration.md'
+video: 'https://www.youtube-nocookie.com/embed/LEBT-oNF1JA'
 verified: '2026-09-15'
 ---
 
