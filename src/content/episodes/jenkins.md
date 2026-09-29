@@ -8,6 +8,7 @@ signals: ['traces', 'metrics', 'logs']
 docs: 'https://github.com/jenkinsci/opentelemetry-plugin/blob/master/docs/setup-and-configuration.md'
 video: 'https://www.youtube-nocookie.com/embed/LEBT-oNF1JA'
 verified: '2026-09-15'
+hidden: true
 ---
 
 ## Switch it on
