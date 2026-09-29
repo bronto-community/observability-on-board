@@ -7,7 +7,6 @@ takeaway: 'The pipeline with the least work is the slowest build: 26 of its 35 s
 signals: ['traces', 'metrics', 'logs']
 docs: 'https://github.com/jenkinsci/opentelemetry-plugin/blob/master/docs/setup-and-configuration.md'
 verified: '2026-09-15'
-hidden: true
 ---
 
 ## Switch it on
