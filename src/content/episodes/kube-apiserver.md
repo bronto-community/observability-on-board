@@ -8,7 +8,6 @@ signals: ['traces']
 docs: 'https://kubernetes.io/docs/concepts/cluster-administration/system-traces/'
 video: 'https://www.youtube-nocookie.com/embed/ZZvTTsFdd70'
 verified: '2026-10-13'
-hidden: true
 ---
 
 ## Switch it on
