@@ -6,6 +6,7 @@ description: 'The Kubernetes API server ships with OpenTelemetry tracing. A thre
 takeaway: 'A deploy succeeds after 14 seconds with no error, and the trace puts 13.8 of them on one Kyverno webhook call.'
 signals: ['traces']
 docs: 'https://kubernetes.io/docs/concepts/cluster-administration/system-traces/'
+video: 'https://www.youtube-nocookie.com/embed/ZZvTTsFdd70'
 verified: '2026-10-13'
 hidden: true
 ---
