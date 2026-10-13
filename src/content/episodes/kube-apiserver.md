@@ -3,10 +3,10 @@ title: 'The Kubernetes API server already traces every request'
 tool: 'Kubernetes API server'
 episode: 11
 description: 'The Kubernetes API server ships with OpenTelemetry tracing. A three-line file and one flag in its static pod manifest turn every request into a trace.'
-takeaway: 'A deploy that succeeds after 14 seconds with no error, and the trace puts 13.8 of them on one Kyverno webhook call.'
+takeaway: 'A deploy succeeds after 14 seconds with no error, and the trace puts 13.8 of them on one Kyverno webhook call.'
 signals: ['traces']
 docs: 'https://kubernetes.io/docs/concepts/cluster-administration/system-traces/'
-verified: '2026-10-12'
+verified: '2026-10-13'
 hidden: true
 ---
 
