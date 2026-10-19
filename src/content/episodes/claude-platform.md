@@ -13,9 +13,7 @@ hidden: true
 ## Switch it on
 
 Claude Platform's OpenTelemetry export is configured in the Claude Console and needs the
-organization admin role. The steps below match the Console as of the verified date; for the
-current version, see
-[Anthropic's documentation](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api).
+organization admin role.
 
 1. Open [Settings → OpenTelemetry](https://platform.claude.com/settings/telemetry-destinations)
    in the Claude Console.
