@@ -8,7 +8,6 @@ signals: ['traces']
 docs: 'https://platform.claude.com/docs/en/manage-claude/opentelemetry/api'
 video: 'https://www.youtube-nocookie.com/embed/bPddVU0DJUQ'
 verified: '2026-10-16'
-hidden: true
 ---
 
 ## Switch it on
