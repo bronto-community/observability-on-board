@@ -6,6 +6,7 @@ description: 'Claude Platform can trace every Messages API request and Managed A
 takeaway: 'The answer looked fine. The trace showed the agent''s first command had failed.'
 signals: ['traces']
 docs: 'https://platform.claude.com/docs/en/manage-claude/opentelemetry/api'
+video: 'https://www.youtube-nocookie.com/embed/bPddVU0DJUQ'
 verified: '2026-10-16'
 hidden: true
 ---
