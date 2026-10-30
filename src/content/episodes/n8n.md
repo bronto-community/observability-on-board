@@ -6,6 +6,7 @@ description: 'n8n can send workflow and node spans to any OpenTelemetry backend.
 takeaway: '292 of 300 HTTP calls in one workflow run were waiting for a database connection, up to 4.7 s.'
 signals: ['traces']
 docs: 'https://docs.n8n.io/hosting/logging-monitoring/opentelemetry/'
+video: 'https://www.youtube-nocookie.com/embed/vJiA-wlOkGY'
 verified: '2026-10-30'
 hidden: true
 ---
