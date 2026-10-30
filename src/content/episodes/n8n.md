@@ -8,7 +8,6 @@ signals: ['traces']
 docs: 'https://docs.n8n.io/hosting/logging-monitoring/opentelemetry/'
 video: 'https://www.youtube-nocookie.com/embed/vJiA-wlOkGY'
 verified: '2026-10-30'
-hidden: true
 ---
 
 ## Switch it on
