@@ -46,6 +46,21 @@ function extractSections(body: string) {
   return ships;
 }
 
+// The lead-in under "## Switch it on", up to the first ship div: where the values go, and for
+// a tool configured in a web UI, the numbered click path. Without it the copied text is values
+// with no instructions.
+function extractLeadIn(body: string): string[] {
+  const lines = body.split('\n');
+  const start = lines.findIndex((l) => /^##\s+Switch it on/.test(l));
+  if (start < 0) return [];
+  const out: string[] = [];
+  for (const line of lines.slice(start + 1)) {
+    if (/<div class="ship ship-/.test(line)) break;
+    out.push(line);
+  }
+  return out;
+}
+
 // Inside a ship section, keep either the knob-basic or the knob-full variant
 // and drop the tab bar. Content outside knob divs always stays.
 function filterKnobs(lines: string[], full: boolean): string[] {
@@ -187,5 +202,6 @@ export const GET: APIRoute = async ({ params, url }) => {
     ...notes,
   ].join('\n');
 
-  return respond(`${head}\n\n${sections.join('\n\n')}`);
+  const leadIn = renderLines(extractLeadIn(entry.body));
+  return respond(`${head}\n\n${leadIn ? `${leadIn}\n\n` : ''}${sections.join('\n\n')}`);
 };
