@@ -1,7 +1,7 @@
 ---
 title: 'Claude Platform can trace every agent step'
 tool: 'Claude Platform'
-episode: 13
+episode: 12
 description: 'Claude Platform can trace every Messages API request and Managed Agents session to any OpenTelemetry backend. One Console destination turns it on.'
 takeaway: 'The answer looked fine. The trace showed the agent''s first command had failed.'
 signals: ['traces']
