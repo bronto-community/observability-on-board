@@ -6,6 +6,7 @@ description: 'Checkly can send every check run as a span to any OpenTelemetry ba
 takeaway: 'Checkly caught the slow homepage. The joined trace put 1.3 s of its 1.47 s on one call to a recommendations service.'
 signals: ['traces']
 docs: 'https://www.checklyhq.com/docs/resolve/traces/export/'
+video: 'https://www.youtube-nocookie.com/embed/o86DWaBeWQA'
 verified: '2026-10-26'
 hidden: true
 ---
