@@ -8,7 +8,6 @@ signals: ['traces']
 docs: 'https://www.checklyhq.com/docs/resolve/traces/export/'
 video: 'https://www.youtube-nocookie.com/embed/o86DWaBeWQA'
 verified: '2026-10-26'
-hidden: true
 ---
 
 ## Switch it on
